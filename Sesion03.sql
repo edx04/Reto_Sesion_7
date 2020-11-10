@@ -74,6 +74,10 @@ JOIN empleado as e
 USING(id_empleado)
 ORDER BY clave);
 
+SELECT *
+FROM  empleado_articulo117;
+       
+        
 #Saber qué puesto ha tenido más ventas.
 
 CREATE VIEW puesto_ventas117 AS
@@ -85,6 +89,11 @@ JOIN puesto as p
 USING (id_puesto)
 GROUP BY  id_puesto
 ORDER BY ventas DESC);
+
+SELECT *
+FROM puesto_ventas117
+ORDER BY total DESC
+LIMIT 1;
 
 
 
