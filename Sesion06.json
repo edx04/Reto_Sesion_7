@@ -1,0 +1,74 @@
+{
+    "Reto1": {
+        [{
+            "$match": {
+                "property_type": "House"
+            }
+        }, {
+            "$match": {
+                "bedrooms": { "$gte": 1 }
+            }
+        }, {
+            "$addFields": {
+                "costo_recamara": {
+                    "$divide": ["$price", "$bedrooms"]
+                }
+            }
+        }, {
+            "$group": {
+                "_id": "$address.country",
+                "total_price": {
+                    "$sum": "$costo_recamara"
+                },
+                "total_count": {
+                    "$sum": 1
+                }
+            }
+        }, {
+            "$addFields": {
+                "pais": "$_id",
+                "costo_promedio_por_habitacion": {
+                    "$round": [
+                        { "$divide": ["$total_price", "$total_count"] },
+                        3
+                    ]
+                }
+            }
+        }, {
+            "$project": {
+                "_id": 0,
+                "pais": 1,
+                "costo_promedio_por_habitacion": 1
+            }
+        }]
+    },
+
+    "Reto2": {
+        [{
+            "$lookup": {
+                "from": "users",
+                "localField": "name",
+                "foreignField": "name",
+                "as": "info"
+            }
+        }, {
+            "$addFields": {
+                "Elementos": { "$arrayElemAt": ["$info", 0] }
+            }
+        }, {
+            "$addFields": {
+                "email": "$Elementos.email",
+                "password": "$Elementos.password"
+
+            }
+        }, {
+            "$project": {
+                "name": 1,
+                "email": 1,
+                "password": 1,
+                "_id": 0,
+            }
+        }]
+    }
+
+}
