@@ -1,0 +1,78 @@
+{
+
+    "Reto 1": {
+        "Propiedades que no permitan fiestas": {
+            "filter": {
+                "house_rules": "RegExp('no parties', i)"
+            }
+        },
+        "Propiedades que admitan mascotas": {
+
+            "filter": {
+                "house_rules": "RegExp('(pet friendly|pets allowed)', i)"
+            }
+        },
+        "Propiedades que no permitan fumadores.": {
+            "filter": {
+                "house_rules": "RegExp('(no smoke|no smoking)', i)"
+            }
+        },
+        "Propiedades que no permitan fiestas ni fumadores.": {
+
+            "filter": {
+                "$and": [{
+                        "house_rules": "RegExp('(no smoke|no smoking)', i)"
+                    },
+                    {
+                        "house_rules": "RegExp('no parties', i)"
+                    }
+                ]
+            }
+        }
+
+    },
+
+    "Reto 2": {
+        "publicaciones que tengan 50 o más comentarios, que la valoración sea mayor o igual a 80, que cuenten con conexión a Internet vía cable y estén ubicada en Brazil.": {
+
+            "filter": {
+                "$and": [{
+                        "number_of_reviews": {
+                            "$gte": 50
+                        }
+                    },
+                    {
+                        "review_scores.review_scores_rating": {
+                            "$gte": 80
+                        }
+                    },
+                    {
+                        "amenities": {
+                            "$in": [
+                                "RegExp('Ethernet', i)"
+                            ]
+                        }
+                    },
+                    {
+                        "address.country": "RegExp('Brazil', i)"
+                    }
+                ]
+            }
+
+
+
+
+        },
+        "Reto 3": {
+            "Encontrar el número de publicaciones que tienen conexión a Internet, sea desde Wifi o desde cable (Ethernet)": {
+                "$match": {
+                    "amenities": {
+                        "$in": ["/internet/i", "/wifi/i", "/Ethernet/i"]
+                    }
+                },
+                "$count": "cuenta"
+            }
+
+
+        }
+    }
